@@ -1,23 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://dijirmwnhla4j"]
+[gd_scene load_steps=6 format=3 uid="uid://ciuo25hrqh3nr"]
 
 [ext_resource type="PackedScene" uid="uid://ygtu7tci8wpc" path="res://player.tscn" id="1_a285m"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4l441"]
-size = Vector3(68, 2, 68)
+[sub_resource type="BoxMesh" id="BoxMesh_r7kxh"]
+size = Vector3(60, 2, 60)
 
-[sub_resource type="BoxMesh" id="BoxMesh_5xxs2"]
-size = Vector3(68, 2, 68)
+[sub_resource type="BoxShape3D" id="BoxShape3D_k2rva"]
+size = Vector3(60, 2, 60)
 
-[node name="Main" type="Node"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_noi50"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_f5p6u"]
+material = SubResource("StandardMaterial3D_noi50")
+height = 1.0
+
+[node name="Main" type="Node3D"]
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-shape = SubResource("BoxShape3D_4l441")
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
-mesh = SubResource("BoxMesh_5xxs2")
+mesh = SubResource("BoxMesh_r7kxh")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_k2rva")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.369747, 0.929133, 0, -0.929133, -0.369747, -7.60475, 49.6831, -4.48816)
@@ -25,11 +31,35 @@ light_energy = 1.652
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_a285m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17815, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 1.74846e-07, 0, -1.74846e-07, 1, -0.0993466, 8, 2.15643)
 
 [node name="CameraPivot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 19)
+projection = 1
 current = true
 fov = 74.8
+size = 19.0
+
+[node name="Cylandirs" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cylandirs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4569, 2.18004, 14.8091)
+mesh = SubResource("CylinderMesh_f5p6u")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Cylandirs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4448, 2.18004, 15.0399)
+mesh = SubResource("CylinderMesh_f5p6u")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Cylandirs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5411, 4.36008, -9.17777)
+mesh = SubResource("CylinderMesh_f5p6u")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Cylandirs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4164, 6.54012, -6.84083)
+mesh = SubResource("CylinderMesh_f5p6u")
+skeleton = NodePath("../MeshInstance3D3")
