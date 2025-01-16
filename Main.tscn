@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ciuo25hrqh3nr"]
+[gd_scene load_steps=8 format=3 uid="uid://ciuo25hrqh3nr"]
 
 [ext_resource type="PackedScene" uid="uid://ygtu7tci8wpc" path="res://player.tscn" id="1_a285m"]
+[ext_resource type="Script" path="res://main.gd" id="1_uno07"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_r7kxh"]
 size = Vector3(60, 2, 60)
@@ -15,9 +16,19 @@ albedo_color = Color(1, 0, 1, 1)
 material = SubResource("StandardMaterial3D_noi50")
 height = 1.0
 
+[sub_resource type="Curve3D" id="Curve3D_n03x6"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -15.4157, -2.68434, 17.2095, 0, 0, 0, 0, 0, 0, -13.8858, 0.997581, -8.81749, 0, 0, 0, 0, 0, 0, 13.6869, 1.30727, -8.91732, 0, 0, 0, 0, 0, 0, 13.7373, 1.27595, 17.2439),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
 [node name="Main" type="Node3D"]
+script = ExtResource("1_uno07")
 
 [node name="Ground" type="StaticBody3D" parent="."]
+collision_layer = 4
+collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("BoxMesh_r7kxh")
@@ -44,6 +55,7 @@ fov = 74.8
 size = 19.0
 
 [node name="Cylandirs" type="Node3D" parent="."]
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Cylandirs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4569, 2.18004, 14.8091)
@@ -63,3 +75,16 @@ skeleton = NodePath("../MeshInstance3D2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.4164, 6.54012, -6.84083)
 mesh = SubResource("CylinderMesh_f5p6u")
 skeleton = NodePath("../MeshInstance3D3")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="SpawnPath" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.183738, 0, -2.61551)
+curve = SubResource("Curve3D_n03x6")
+
+[node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(0.998277, -0.00820536, -0.0581027, 4.65661e-10, 0.990175, -0.139834, 0.0586792, 0.139593, 0.988469, -15.4157, -2.68434, 17.2095)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
